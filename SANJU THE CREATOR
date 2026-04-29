@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanju The Creator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #000;
+  color: white;
+}
+
+/* NAVBAR */
+nav {
+  position: fixed;
+  width: 100%;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+nav h1 {
+  color: #f5c542;
+  font-weight: 700;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav ul li {
+  margin-left: 30px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+nav ul li a:hover {
+  color: #f5c542;
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+  background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.2)),
+              url('images/hero.jpg') right/cover no-repeat;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero h2 {
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-size: 70px;
+  color: #f5c542;
+  margin: 10px 0;
+}
+
+.hero span {
+  font-size: 28px;
+  display: block;
+}
+
+.hero p {
+  margin: 20px 0;
+  opacity: 0.7;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border: 1px solid #f5c542;
+  color: #f5c542;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #f5c542;
+  color: black;
+}
+
+/* ABOUT */
+.about {
+  display: flex;
+  gap: 40px;
+  padding: 80px 60px;
+  background: #0a0a0a;
+}
+
+.about img {
+  width: 250px;
+  border-radius: 10px;
+}
+
+.about-text {
+  max-width: 600px;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px;
+  border-top: 1px solid #222;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat h2 {
+  color: #f5c542;
+}
+
+/* GALLERY */
+.gallery {
+  padding: 80px 60px;
+}
+
+.gallery h2 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 20px;
+}
+
+.grid img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.grid img:hover {
+  transform: scale(1.05);
+}
+
+/* CONTACT */
+.contact {
+  text-align: center;
+  padding: 80px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #111;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <h1>Sanju</h1>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Work</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h2>HI, I'M</h2>
+    <h1>SANJU</h1>
+    <span>THE CREATOR</span>
+    <p>Create • Inspire • Impact</p>
+    <a href="#" class="btn">Explore My Work</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <img src="images/profile.jpg">
+  <div class="about-text">
+    <h2>Turning Ideas Into Cinematic Reality</h2>
+    <p>I specialize in cinematic editing, storytelling and creative visuals.</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat">
+    <h2>4+</h2>
+    <p>Years Experience</p>
+  </div>
+  <div class="stat">
+    <h2>100+</h2>
+    <p>Projects</p>
+  </div>
+  <div class="stat">
+    <h2>100%</h2>
+    <p>Dedication</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <h2>Some Of My Best Work</h2>
+  <div class="grid">
+    <img src="images/img1.jpg">
+    <img src="images/img2.jpg">
+    <img src="images/img3.jpg">
+    <img src="images/img4.jpg">
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+  <h2>Let's Create Something Amazing</h2>
+  <a href="#" class="btn">Contact Me</a>
+</section>
+
+<footer>
+  <p>© 2026 Sanju The Creator</p>
+</footer>
+
+</body>
+</html>
