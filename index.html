@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanju The Creator</title>
+
+<style>
+body { margin:0; font-family:Poppins; background:black; color:white; }
+
+nav {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 20px; border-bottom:1px solid #222;
+}
+.logo { color:gold; font-size:22px; font-weight:bold; }
+
+.search-box { flex:1; text-align:center; }
+#search { width:60%; padding:8px; border-radius:20px; border:none; }
+
+.nav-links a { margin:0 10px; text-decoration:none; font-weight:bold; }
+.nav-links a:nth-child(1){ color:#00ffcc; }
+.nav-links a:nth-child(2){ color:#ffaa00; }
+.nav-links a:nth-child(3){ color:#ff4444; }
+.nav-links a:nth-child(4){ color:#ff00aa; }
+
+.profile-img {
+    width:35px; height:35px; border-radius:50%;
+    border:2px solid gold; margin-left:10px;
+}
+
+.hero {
+    display:flex; justify-content:space-between;
+    align-items:center; padding:50px; flex-wrap:wrap;
+}
+.hero h1 { font-size:50px; color:gold; }
+.hero img { width:300px; border-radius:15px; }
+
+.upload-box { text-align:center; margin:30px; }
+input { padding:10px; margin:5px; }
+
+.gallery {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px; padding:20px;
+}
+.gallery div { background:#111; padding:10px; border-radius:10px; text-align:center; }
+.gallery img { width:100%; border-radius:10px; }
+.gallery p { color:gold; }
+
+.like-btn {
+    margin-top:8px;
+    padding:6px 10px;
+    border:none;
+    border-radius:10px;
+    background:#ff0044;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">SANJU THE CREATOR</div>
+
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Search posts...">
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#upload">Upload</a>
+        <a href="https://instagram.com/single_sanju63" target="_blank">Instagram</a>
+        <img src="my-photo.jpg" class="profile-img">
+    </div>
+</nav>
+
+<section class="hero">
+    <div>
+        <h1>Sanju The Creator</h1>
+        <p>Create • Inspire • Impact</p>
+    </div>
+    <img src="my-photo.jpg">
+</section>
+
+<div class="upload-box" id="upload">
+    <h2>Upload Post</h2>
+    <input type="text" id="titleInput" placeholder="Post title"><br>
+    <input type="file" id="fileInput">
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, addDoc, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBqFKY5EmCqR2jI-7MQSsFMo26lQsQXEvA",
+  authDomain: "sanju-website-e22e2.firebaseapp.com",
+  projectId: "sanju-website-e22e2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const fileInput = document.getElementById("fileInput");
+const gallery = document.getElementById("gallery");
+const titleInput = document.getElementById("titleInput");
+const search = document.getElementById("search");
+
+// 🔥 Cloudinary upload
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "sanju_website");
+
+    const res = await fetch("https://api.cloudinary.com/v1_1/dfzxyk9jc/image/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    return data.secure_url;
+}
+
+// Upload post
+fileInput.addEventListener("change", async () => {
+    const file = fileInput.files[0];
+    const title = titleInput.value;
+
+    if (!title) return alert("Enter title");
+
+    const imageUrl = await uploadImage(file);
+
+    await addDoc(collection(db, "posts"), {
+        title: title.toLowerCase(),
+        image: imageUrl,
+        likes: 0
+    });
+
+    loadPosts();
+});
+
+// ❤️ Like function
+async function likePost(id, currentLikes) {
+    const postRef = doc(db, "posts", id);
+    await updateDoc(postRef, {
+        likes: currentLikes + 1
+    });
+    loadPosts();
+}
+window.likePost = likePost;
+
+// Load posts
+async function loadPosts() {
+    gallery.innerHTML = "";
+
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    querySnapshot.forEach(docSnap => {
+        const post = docSnap.data();
+        const id = docSnap.id;
+
+        gallery.innerHTML += `
+            <div>
+                <img src="${post.image}">
+                <p>${post.title}</p>
+                <button class="like-btn" onclick="likePost('${id}', ${post.likes || 0})">
+                    ❤️ ${post.likes || 0}
+                </button>
+            </div>
+        `;
+    });
+}
+
+// Search
+search.addEventListener("input", async () => {
+    const value = search.value.toLowerCase();
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    gallery.innerHTML = "";
+
+    querySnapshot.forEach(docSnap => {
+        const post = docSnap.data();
+        const id = docSnap.id;
+
+        if (post.title.includes(value)) {
+            gallery.innerHTML += `
+                <div>
+                    <img src="${post.image}">
+                    <p>${post.title}</p>
+                    <button class="like-btn" onclick="likePost('${id}', ${post.likes || 0})">
+                        ❤️ ${post.likes || 0}
+                    </button>
+                </div>
+            `;
+        }
+    });
+});
+
+loadPosts();
+
+</script>
+
+</body>
+</html>
